@@ -1,0 +1,28 @@
+# top-most EditorConfig file
+root = true
+
+# Applies to all C# files
+[*.cs]
+
+# Indentation & spacing
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+
+# Style preferences
+csharp_new_line_before_open_brace = methods,types
+csharp_indent_case_contents = true
+csharp_indent_switch_labels = true
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_preserve_single_line_statements = false
+csharp_preserve_single_line_blocks = true
+
+# Wrapping
+csharp_wrap_preserve_single_line = false
+csharp_new_line_before_members_in_object_initializers = true
+
+# Naming convention – optional
+dotnet_naming_rule.interface_should_start_with_i.symbols = interface
+dotnet_naming_rule.interface_should_start_with_i.style = starts_with_i
+dotnet_naming_rule.interface_should_start_with_i.severity = suggestion

@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="UnmanagedMemory.Lab/UnmanagedMemory.Lab.csproj" />
+  <Project Path="UnmanagedMemory/UnmanagedMemory.csproj" />
+</Solution>
