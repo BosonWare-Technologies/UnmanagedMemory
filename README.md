@@ -68,7 +68,7 @@ A disposable wrapper for a block of unmanaged memory.
 - `T this[int index]`: Indexer for element access.
 - Implements `IEnumerable<T>` for LINQ support.
 
-### `MemoryUtils`
+### `Unmanaged`
 
 Static helpers for raw memory allocation.
 
@@ -110,4 +110,15 @@ MIT © [BosonWare, Technologies](https://github.com/BosonWare-Technologies/Unman
 
 ## Release Notes
 
-Initial Release.
+Refactor memory management and enhance UnsafeMemory API
+
+- Replaces MemoryUtils with improved memory management functionality
+- Adds memory expansion capabilities and safer pointer handling
+- Improves debug support with DebuggerTypeProxy
+- Enhances span operations with new AsSpan overloads
+- Adds explicit operators for Span conversion
+- Updates documentation for clarity and completeness
+
+Breaking changes:
+- Removes MemoryUtils class
+- Changes memory management approach

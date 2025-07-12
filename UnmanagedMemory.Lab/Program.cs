@@ -1,25 +1,22 @@
 ﻿using UnmanagedMemory;
+using UnmanagedMemory.IO;
 
-Console.WriteLine("Hello, World!");
+using var array = new UnsafeMemory<int>(10);
 
-using var memory = new UnsafeMemory<int>(10);
+array.AsSpan().Fill(25);
 
-memory.AsSpan().Fill(25);
+array[9] = 17;
 
-memory[9] = 20;
+Console.WriteLine($"({array.Length}) [{string.Join(", ", array)}]");
 
-var @enum = memory.Where(x => x > 20);
+array.Expand(20);
 
-Console.WriteLine($"[{string.Join(", ", @enum)}]");
+array.AsSpan(10).Fill(42);
 
-unsafe {
-    var ptr = MemoryUtils.Malloc(512);
+array[19] = 100;
 
-    var bytes = new Span<byte>(ptr, 512);
+Console.WriteLine($"({array.Length}) [{string.Join(", ", array)}]");
 
-    MemoryUtils.Free(ref ptr);
-}
-
-Console.WriteLine($"My Array: [{string.Join(", ", memory.AsSpan().ToArray())}]");
+array.GetPointerWrapper()[3] = Random.Shared.Next();
 
 Console.Read();

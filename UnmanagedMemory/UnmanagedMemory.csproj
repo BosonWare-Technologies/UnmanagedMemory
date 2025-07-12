@@ -9,7 +9,7 @@
     
     <Authors>Realtin (Coding Boson)</Authors>
     <Company>BosonWare, Technologies</Company>
-    <Version>1.0.0</Version>
+    <Version>2.0.0</Version>
     <Copyright>BosonWare, Technologies</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -22,7 +22,17 @@
     </RepositoryUrl>
 
     <PackageReleaseNotes>
-    Initial Release.
+    Refactor memory management and enhance UnsafeMemory API
+    - Replaces MemoryUtils with improved memory management functionality
+    - Adds memory expansion capabilities and safer pointer handling
+    - Improves debug support with DebuggerTypeProxy
+    - Enhances span operations with new AsSpan overloads
+    - Adds explicit operators for Span conversion
+    - Updates documentation for clarity and completeness
+    
+    Breaking changes:
+    - Removes MemoryUtils class
+    - Changes memory management approach
     </PackageReleaseNotes>
   </PropertyGroup>
   
