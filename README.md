@@ -143,5 +143,5 @@ Refactor memory management and enhance UnsafeMemory API
 - Updates documentation for clarity and completeness
 
 Breaking changes:
-- Removes MemoryUtils class
-- Changes memory management approach
+- This Version contains no breaking changes.
+
