@@ -12,9 +12,11 @@ public abstract class UnmanagedObject : CriticalFinalizerObject, IDisposable
     /// </summary>
     ~UnmanagedObject()
     {
-        if (!IsDisposed) {
-            Free();
-        }
+        // FIX:
+        //  Remove the `if (!IsDisposed)` statement which is not required since the finalizer
+        //  can only run if the unmanaged object has not been disposed.
+        
+        Free(); // Free the unmanaged resources.
 
         throw new MemoryLeakException();
     }
@@ -22,12 +24,13 @@ public abstract class UnmanagedObject : CriticalFinalizerObject, IDisposable
     protected abstract void Free();
 
     /// <summary>
-    /// Releases the unmanaged memory and suppresses finalization.
+    /// Releases the unmanaged object and suppresses finalization.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Dispose()
+    public virtual void Dispose()
     {
         Free();
+        IsDisposed = true;
 
         GC.SuppressFinalize(this);
     }
@@ -37,7 +40,7 @@ public abstract class UnmanagedObject : CriticalFinalizerObject, IDisposable
     {
         if (IsDisposed) {
             throw new ObjectDisposedException(GetType().Name,
-                "The memory has already been disposed.");
+                "The unmanaged object has already been disposed.");
         }
     }
 }

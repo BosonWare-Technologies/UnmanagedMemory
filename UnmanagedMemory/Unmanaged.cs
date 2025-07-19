@@ -16,21 +16,21 @@ public static unsafe class Unmanaged
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Free(ref void* ptr)
     {
-        if (ptr is not null) {
-            Marshal.FreeHGlobal((nint)ptr);
+        if (ptr is null) return;
+        
+        Marshal.FreeHGlobal((nint)ptr);
 
-            ptr = null; // Disallow the reuse of that pointer.
-        }
+        ptr = null; // Disallow the reuse of that pointer.
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Free<T>(ref T* ptr) where T : unmanaged
     {
-        if (ptr is not null) {
-            Marshal.FreeHGlobal((nint)ptr);
+        if (ptr is null) return;
+        
+        Marshal.FreeHGlobal((nint)ptr);
 
-            ptr = null; // Disallow the reuse of that pointer.
-        }
+        ptr = null; // Disallow the reuse of that pointer.
     }
 
     [UnsafeApi]

@@ -4,10 +4,9 @@ namespace UnmanagedMemory;
 
 public static class UnsafeMemoryExtensions
 {
-    extension<T>(UnsafeMemory<T> array) where T : unmanaged
+    [UnsafeApi]
+    public static unsafe PointerWrapper<T> GetPointerWrapper<T>(this UnsafeMemory<T> array) where T : unmanaged
     {
-        [UnsafeApi]
-        public unsafe PointerWrapper<T> GetPointerWrapper()
-            => new(array.AsUnsafePointer(), array.Length);
+        return new PointerWrapper<T>(array.AsUnsafePointer(), array.Length);
     }
 }

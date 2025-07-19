@@ -1,7 +1,7 @@
 namespace UnmanagedMemory;
 
 [Serializable]
-public class MemoryLeakException : Exception
+public sealed class MemoryLeakException : UnmanagedMemoryException
 {
     public MemoryLeakException()
     {

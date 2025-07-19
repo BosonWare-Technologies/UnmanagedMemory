@@ -6,7 +6,7 @@ internal class UnsafeMemoryDebuggerProxy<T>(UnsafeMemory<T> memory) where T : un
 
     public unsafe IntPtr StartAddress => (IntPtr)_memory.AsUnsafePointer();
 
-    public unsafe IntPtr EndAddress => StartAddress + _memory.Size;
+    public IntPtr EndAddress => StartAddress + _memory.Size;
 
     public int Length => _memory.Length;
 
@@ -14,6 +14,10 @@ internal class UnsafeMemoryDebuggerProxy<T>(UnsafeMemory<T> memory) where T : un
 
     public T[] Items {
         get {
+            if (_memory.Length > 1000) {
+                return [.. _memory.AsSpan(0, 1000)];
+            }
+            
             return [.. _memory];
         }
     }

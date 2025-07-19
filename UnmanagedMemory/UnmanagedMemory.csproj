@@ -6,10 +6,11 @@
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>preview</LangVersion>
+    <DocumentationFile>UnmanagedMemory.xml</DocumentationFile>
     
     <Authors>Realtin (Coding Boson)</Authors>
     <Company>BosonWare, Technologies</Company>
-    <Version>2.0.0</Version>
+    <Version>2.2.0</Version>
     <Copyright>BosonWare, Technologies</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -22,22 +23,25 @@
     </RepositoryUrl>
 
     <PackageReleaseNotes>
-    Refactor memory management and enhance UnsafeMemory API
-    - Replaces MemoryUtils with improved memory management functionality
-    - Adds memory expansion capabilities and safer pointer handling
-    - Improves debug support with DebuggerTypeProxy
-    - Enhances span operations with new AsSpan overloads
-    - Adds explicit operators for Span conversion
-    - Updates documentation for clarity and completeness
-    
-    Breaking changes:
-    - Removes MemoryUtils class
-    - Changes memory management approach
+    Added UnmanagedTypes:
+    - NativeStringBuilder
+
+    Import documentation.
     </PackageReleaseNotes>
   </PropertyGroup>
   
   <ItemGroup>
       <None Include="../README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="UnmanagedMemory.xml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\README.md">
+      <Link>README.md</Link>
+    </Content>
   </ItemGroup>
 
 </Project>

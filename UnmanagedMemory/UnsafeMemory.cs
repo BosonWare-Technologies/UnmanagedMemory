@@ -33,17 +33,15 @@ public unsafe class UnsafeMemory<T> : UnmanagedObject, IEnumerable<T> where T : 
     /// </summary>
     public struct Enumerator(UnsafeMemory<T> memory) : IEnumerator<T>
     {
-        private readonly UnsafeMemory<T> _memory = memory;
-
         private int _index = -1;
 
-        public readonly T Current => _memory[_index];
+        public readonly T Current => memory[_index];
 
         readonly object IEnumerator.Current => Current;
 
         public bool MoveNext()
         {
-            if (_index + 1 >= _memory.Length)
+            if (_index + 1 >= memory.Length)
                 return false;
 
             _index++;
@@ -118,31 +116,73 @@ public unsafe class UnsafeMemory<T> : UnmanagedObject, IEnumerable<T> where T : 
         }
     }
 
+    /// <summary>
+    /// Initializes every element of the memory block.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Initialize() => AsSpan().Fill(default);
+
+    /// <summary>
+    /// Writes the contents of the specified <see cref="ReadOnlySpan{T}"/> to the unmanaged memory,
+    /// starting at the specified index.
+    /// </summary>
+    /// <param name="span">The source span containing the data to write.</param>
+    /// <param name="start">
+    /// The zero-based index in the unmanaged memory at which to begin writing. 
+    /// Defaults to 0.
+    /// </param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if <paramref name="start"/> is less than zero or if the range specified by
+    /// <paramref name="start"/> and <c>span.Length</c> exceeds the bounds of the unmanaged memory.
+    /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Write(ReadOnlySpan<T> span, int start = 0)
     {
         var destination = AsSpan(start, span.Length);
-
         span.CopyTo(destination);
     }
 
+    /// <summary>
+    /// Use <see cref="Resize"/> instead.
+    /// </summary>
+    /// <param name="length"></param>
+    [Obsolete("Use UnsafeMemory.Resize instead.")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Expand(int length)
+    public void Expand(int length) => Resize(length, keepOriginal: true);
+
+    /// <summary>
+    /// Resizes the unmanaged memory block to the specified length.
+    /// </summary>
+    /// <param name="length">The new length of the memory block.</param>
+    /// <param name="keepOriginal">
+    /// If <c>true</c>, the contents of the original memory 
+    /// block are copied to the new block up to the minimum of the old and new lengths.
+    /// If <c>false</c>, the contents are not preserved.
+    /// </param>
+    /// <exception cref="ObjectDisposedException">
+    /// Thrown if the memory block has already been disposed.
+    /// </exception>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown if attempting to resize a zero-length memory block.
+    /// </exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Resize(int length, bool keepOriginal = true)
     {
-        if (length <= Length) {
-            throw new ArgumentOutOfRangeException("Length must be greater than the current Length.",
-                nameof(length));
-        }
-
+        ThrowIfDisposed();
+        
         if (Length == 0) {
-            throw new InvalidOperationException("You may not expand a zero length memory block.");
+            throw new InvalidOperationException("You may not resize a zero length memory block.");
         }
+        
+        var source = _ptr;
+        var destination = Unmanaged.Malloc<T>(sizeof(T) * length);
 
-        T* source = _ptr;
-        T* destination = Unmanaged.Malloc<T>(sizeof(T) * length);
-
-        Unmanaged.Copy(source, destination, Length);
-
+        if (keepOriginal) {
+            var elementsToCopy = Math.Min(Length, length);
+        
+            Unmanaged.Copy(source, destination, elementsToCopy);
+        }
+        
         Unmanaged.Free(ref source);
 
         _ptr = destination;
@@ -150,8 +190,11 @@ public unsafe class UnsafeMemory<T> : UnmanagedObject, IEnumerable<T> where T : 
         Size = sizeof(T) * length;
     }
 
+    /// <summary>
+    /// Clears the contents of this <see cref="UnsafeMemory{T}"/> object.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Clear() => AsSpan().Fill(default);
+    public void Clear() => AsSpan().Clear();
 
     /// <summary>
     /// Returns a <see cref="Span{T}"/> representing the entire memory block.
@@ -185,16 +228,12 @@ public unsafe class UnsafeMemory<T> : UnmanagedObject, IEnumerable<T> where T : 
         ThrowIfDisposed();
 
         // Sanitize user input.
-        if (start < 0 || start >= Length) {
+        if (start < 0 || start >= Length)
             throw new ArgumentOutOfRangeException(nameof(start), "Start index must be within the bounds of the memory block.");
-        }
-
-        if (Length == 0) {
-            return Span<T>.Empty;
-        }
-
-        // Create a span from the specified range.
-        return new Span<T>(&_ptr[start], Length - start);
+        
+        return Length == 0 ? Span<T>.Empty :
+            // Create a span from the specified range.
+            new Span<T>(&_ptr[start], Length - start);
     }
 
     /// <summary>
@@ -220,16 +259,12 @@ public unsafe class UnsafeMemory<T> : UnmanagedObject, IEnumerable<T> where T : 
         if (start < 0 || start >= Length) {
             throw new ArgumentOutOfRangeException(nameof(start), "Start index must be within the bounds of the memory block.");
         }
-        if (start + length > Length) {
+        if (start + length > Length)
             throw new ArgumentOutOfRangeException(nameof(length), "The specified range exceeds the bounds of the memory block.");
-        }
-
-        if (length == 0) {
-            return Span<T>.Empty;
-        }
-
-        // Create a span from the specified range.
-        return new Span<T>(&_ptr[start], length);
+        
+        return length == 0 ? Span<T>.Empty :
+            // Create a span from the specified range.
+            new Span<T>(&_ptr[start], length);
     }
 
     /// <summary>
@@ -238,6 +273,10 @@ public unsafe class UnsafeMemory<T> : UnmanagedObject, IEnumerable<T> where T : 
     /// <returns>A managed array containing the elements of the memory block.</returns>
     public T[] ToArray() => AsSpan().ToArray();
 
+    /// <summary>
+    /// Returns a raw pointer to the allocated memory.
+    /// </summary>
+    /// <returns></returns>
     [UnsafeApi]
     public T* AsUnsafePointer()
     {
@@ -271,14 +310,31 @@ public unsafe class UnsafeMemory<T> : UnmanagedObject, IEnumerable<T> where T : 
     /// </exception>
     protected override void Free() => Unmanaged.Free(ref _ptr);
 
+    /// <inheritdoc />
+    public override void Dispose()
+    {
+        if (Length == 0) {
+            throw new InvalidOperationException("You may not dispose a zero length memory block.");
+        }
+        
+        base.Dispose();
+    }
+
     /// <summary>
-    /// Returns an enumerator that iterates through the memory block.
+    /// Returns a <see cref="Span{T}"/> representing the entire memory block.
     /// </summary>
-    /// <returns>An enumerator for the memory block.</returns>
+    /// <returns>A <see cref="Span{T}"/> over the memory block.</returns>
     /// <exception cref="ObjectDisposedException">
     /// Thrown if the memory has been disposed.
     /// </exception>
     public static explicit operator Span<T>(UnsafeMemory<T> memory) => memory.AsSpan();
 
+    /// <summary>
+    /// Returns a <see cref="ReadOnlySpan{T}"/> representing the entire memory block.
+    /// </summary>
+    /// <returns>A <see cref="ReadOnlySpan{T}"/> over the memory block.</returns>
+    /// <exception cref="ObjectDisposedException">
+    /// Thrown if the memory has been disposed.
+    /// </exception>
     public static explicit operator ReadOnlySpan<T>(UnsafeMemory<T> memory) => memory.AsSpan();
 }
