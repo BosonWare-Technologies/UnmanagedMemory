@@ -89,6 +89,29 @@ foreach (var value in memory.Where(x => x > 3.0f))
 
 ---
 
+## NativeStringBuilder
+
+```csharp
+using var nativeBuilder = new NativeStringBuilder();
+
+nativeBuilder
+    .Append("Hello")
+    .Append(',')
+    .Append(" ")
+    .Append("World")
+    .Append('!');
+
+var txt = nativeBuilder.ToString();
+```
+
+## FileUtility
+```csharp
+using UnsafeMemory<byte> bytes = await FileUtility.ReadAllBytesAsync("/path/to/file");
+
+// Use the bytes.
+```
+
+
 ## Requirements
 
 - .NET Standard 2.1 or later (.NET Core 3.0+, .NET 5+, .NET 6+, .NET 7+, .NET 8+, .NET 9+)
