@@ -36,7 +36,7 @@ public sealed class NativeStringBuilder : UnmanagedObject
     /// </summary>
     /// <param name="capacity">The initial capacity.</param>
     /// <param name="growthRate">The rate at which the buffer grows.</param>
-    public NativeStringBuilder(int capacity = 256, int  growthRate = 10)
+    public NativeStringBuilder(int capacity = 256, int growthRate = 64)
     {
         if (capacity <= 0) {
             throw new ArgumentOutOfRangeException(nameof(capacity),
@@ -66,6 +66,21 @@ public sealed class NativeStringBuilder : UnmanagedObject
         _buffer[Length++] = c;
         
         return this;
+    }
+
+    /// <summary>
+    /// Appends the string representation of a specified <see cref="int"/> object to this instance.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public NativeStringBuilder Append(int value)
+    {
+        Span<char> buffer = stackalloc char[12];
+        
+        value.TryFormat(buffer, out var charsWritten);
+
+        return Append(buffer[..charsWritten]);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

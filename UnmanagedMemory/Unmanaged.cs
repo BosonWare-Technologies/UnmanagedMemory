@@ -4,6 +4,12 @@ using UnmanagedMemory.Annotations;
 
 namespace UnmanagedMemory;
 
+/// <summary>
+/// Provides utility methods for allocating and freeing unmanaged memory.
+/// <para>
+/// Contains unsafe methods. Use <see cref="UnsafeMemory{T}"/> instead.
+/// </para>
+/// </summary>
 [UnsafeApi]
 public static unsafe class Unmanaged
 {

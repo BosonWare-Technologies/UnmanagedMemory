@@ -111,6 +111,12 @@ using UnsafeMemory<byte> bytes = await FileUtility.ReadAllBytesAsync("/path/to/f
 // Use the bytes.
 ```
 
+## UnsafeMemoryExtensions
+```csharp
+using UnsafeMemory<int> memory = Enumerable
+    .Range(0, 25)
+    .ToUnsafeMemory();
+```
 
 ## Requirements
 
@@ -132,15 +138,6 @@ MIT © [BosonWare, Technologies](https://github.com/BosonWare-Technologies/Unman
 ---
 
 ## Release Notes
-
-Refactor memory management and enhance UnsafeMemory API
-
-- Replaces MemoryUtils with improved memory management functionality
-- Adds memory expansion capabilities and safer pointer handling
-- Improves debug support with DebuggerTypeProxy
-- Enhances span operations with new AsSpan overloads
-- Adds explicit operators for Span conversion
-- Updates documentation for clarity and completeness
 
 Breaking changes:
 - This Version contains no breaking changes.

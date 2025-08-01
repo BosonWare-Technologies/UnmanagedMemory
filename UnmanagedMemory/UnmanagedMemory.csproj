@@ -10,7 +10,7 @@
     
     <Authors>Realtin (Coding Boson)</Authors>
     <Company>BosonWare, Technologies</Company>
-    <Version>2.2.0</Version>
+    <Version>2.5.0</Version>
     <Copyright>BosonWare, Technologies</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -23,10 +23,13 @@
     </RepositoryUrl>
 
     <PackageReleaseNotes>
-    Added UnmanagedTypes:
-    - NativeStringBuilder
-
-    Import documentation.
+      Added Useful Extensions:
+        - Creating an UnsafeMemory from any IEnumerable.
+      
+      Added UnmanagedTypes:
+        - UnsafeList (Experimental)
+      
+      Added more documentation.
     </PackageReleaseNotes>
   </PropertyGroup>
   

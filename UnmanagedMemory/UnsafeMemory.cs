@@ -26,7 +26,8 @@ namespace UnmanagedMemory;
 /// </para>
 /// </remarks>
 [DebuggerTypeProxy(typeof(UnsafeMemoryDebuggerProxy<>))]
-public unsafe class UnsafeMemory<T> : UnmanagedObject, IEnumerable<T> where T : unmanaged
+public unsafe partial class UnsafeMemory<T> 
+    : UnmanagedObject, IEnumerable<T> where T : unmanaged
 {
     /// <summary>
     /// Enumerator for <see cref="UnsafeMemory{T}"/>, enabling iteration over the elements.
@@ -35,10 +36,13 @@ public unsafe class UnsafeMemory<T> : UnmanagedObject, IEnumerable<T> where T : 
     {
         private int _index = -1;
 
+        /// <inheritdoc />
         public readonly T Current => memory[_index];
 
+        /// <inheritdoc />
         readonly object IEnumerator.Current => Current;
 
+        /// <inheritdoc />
         public bool MoveNext()
         {
             if (_index + 1 >= memory.Length)
@@ -49,8 +53,10 @@ public unsafe class UnsafeMemory<T> : UnmanagedObject, IEnumerable<T> where T : 
             return true;
         }
 
+        /// <inheritdoc />
         public void Reset() => _index = -1;
 
+        /// <inheritdoc />
         public readonly void Dispose() { }
     }
 
@@ -69,7 +75,7 @@ public unsafe class UnsafeMemory<T> : UnmanagedObject, IEnumerable<T> where T : 
     /// <summary>
     /// Gets the total size in bytes of the allocated memory block.
     /// </summary>
-    public int Size { get; private set; }
+    public int Size => Length * sizeof(T);
 
     /// <summary>
     /// Gets a reference to the element at the specified index.
@@ -109,7 +115,6 @@ public unsafe class UnsafeMemory<T> : UnmanagedObject, IEnumerable<T> where T : 
         }
 
         Length = length;
-        Size = sizeof(T) * length;
 
         if (length > 0) {
             _ptr = Unmanaged.Malloc<T>(Size);
@@ -139,6 +144,7 @@ public unsafe class UnsafeMemory<T> : UnmanagedObject, IEnumerable<T> where T : 
     public void Write(ReadOnlySpan<T> span, int start = 0)
     {
         var destination = AsSpan(start, span.Length);
+        
         span.CopyTo(destination);
     }
 
@@ -187,7 +193,6 @@ public unsafe class UnsafeMemory<T> : UnmanagedObject, IEnumerable<T> where T : 
 
         _ptr = destination;
         Length = length;
-        Size = sizeof(T) * length;
     }
 
     /// <summary>
