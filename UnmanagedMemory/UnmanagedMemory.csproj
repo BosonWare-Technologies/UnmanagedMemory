@@ -10,7 +10,7 @@
     
     <Authors>Realtin (Coding Boson)</Authors>
     <Company>BosonWare, Technologies</Company>
-    <Version>2.5.0</Version>
+    <Version>2.6.0</Version>
     <Copyright>BosonWare, Technologies</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -23,13 +23,7 @@
     </RepositoryUrl>
 
     <PackageReleaseNotes>
-      Added Useful Extensions:
-        - Creating an UnsafeMemory from any IEnumerable.
-      
-      Added UnmanagedTypes:
-        - UnsafeList (Experimental)
-      
-      Added more documentation.
+      Fixed the 'MemoryLeakException' bug in the UnsafeList type.
     </PackageReleaseNotes>
   </PropertyGroup>
   

@@ -169,7 +169,7 @@ public unsafe partial class UnsafeList<T>
     
     public Span<T> AsSpan() => _items.AsSpan(0, Count);
 
-    protected override void Free() => _items.FreeUnmanaged();
+    protected override void Free() => _items.Dispose();
 
     /// <summary>
     /// Returns a raw pointer to the allocated memory.

@@ -2,8 +2,16 @@ using UnmanagedMemory.Annotations;
 
 namespace UnmanagedMemory;
 
-public unsafe partial class UnsafeMemory<T> where T : unmanaged
+internal unsafe interface IUnsafeMemory
 {
+    void* NativePointer { get; }
+}
+
+public unsafe partial class UnsafeMemory<T> 
+    : IUnsafeMemory where T : unmanaged
+{
+    void* IUnsafeMemory.NativePointer => _ptr;
+    
     [UnsafeApi]
     internal void Realloc(int length)
     {

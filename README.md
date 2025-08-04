@@ -138,7 +138,5 @@ MIT © [BosonWare, Technologies](https://github.com/BosonWare-Technologies/Unman
 ---
 
 ## Release Notes
-
-Breaking changes:
-- This Version contains no breaking changes.
+Fixed the 'MemoryLeakException' bug in the UnsafeList type.
 
