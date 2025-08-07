@@ -149,14 +149,6 @@ public unsafe partial class UnsafeMemory<T>
     }
 
     /// <summary>
-    /// Use <see cref="Resize"/> instead.
-    /// </summary>
-    /// <param name="length"></param>
-    [Obsolete("Use UnsafeMemory.Resize instead.")]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Expand(int length) => Resize(length, keepOriginal: true);
-
-    /// <summary>
     /// Resizes the unmanaged memory block to the specified length.
     /// </summary>
     /// <param name="length">The new length of the memory block.</param>
@@ -178,6 +170,14 @@ public unsafe partial class UnsafeMemory<T>
         
         if (Length == 0) {
             throw new InvalidOperationException("You may not resize a zero length memory block.");
+        }
+
+        if (length == 0) {
+            Unmanaged.Free(ref _ptr);
+            
+            Length = 0;
+            
+            return;
         }
         
         var source = _ptr;
