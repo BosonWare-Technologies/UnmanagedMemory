@@ -1,9 +1,14 @@
+using JetBrains.Annotations;
 using static System.AttributeTargets;
 
 namespace UnmanagedMemory.Annotations;
 
 /// <summary>
-/// Annotates the annotated member as unsafe.
+///     Specifies that the annotated member is unsafe.
 /// </summary>
 [AttributeUsage(Class | Struct | Constructor | Method | Property)]
-public sealed class UnsafeApiAttribute : Attribute;
+public sealed class UnsafeApiAttribute : Attribute
+{
+    [UsedImplicitly]
+    public string Comment { get; set; } = "";
+}

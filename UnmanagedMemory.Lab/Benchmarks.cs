@@ -17,10 +17,10 @@ public class Benchmarks
             builder.Append(i);
         }
         builder.Append("]");
-        
+
         var str = builder.ToString();
     }
-    
+
     [Benchmark]
     public void ManagedStringBuilder()
     {

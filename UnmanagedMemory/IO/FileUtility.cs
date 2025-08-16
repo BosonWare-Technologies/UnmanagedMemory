@@ -1,8 +1,10 @@
 using System.Buffers;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace UnmanagedMemory.IO;
 
+[PublicAPI]
 public static class FileUtility
 {
     public static async Task<string> ReadAllTextAsync(string path)
@@ -20,16 +22,16 @@ public static class FileUtility
 
         using var stream = File.OpenRead(path);
 
-        int length = (int)stream.Length;
+        var length = (int)stream.Length;
 
         var memory = new UnsafeMemory<byte>(length);
 
         var buffer = ArrayPool<byte>.Shared.Rent(bufferSize);
 
         try {
-            int position = 0;
+            var position = 0;
             while (true) {
-                int bytesRead = await stream.ReadAsync(buffer);
+                var bytesRead = await stream.ReadAsync(buffer);
 
                 memory.Write(buffer.AsSpan(0, bytesRead), position);
 

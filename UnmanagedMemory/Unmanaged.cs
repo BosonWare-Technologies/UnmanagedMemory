@@ -5,25 +5,31 @@ using UnmanagedMemory.Annotations;
 namespace UnmanagedMemory;
 
 /// <summary>
-/// Provides utility methods for allocating and freeing unmanaged memory.
-/// <para>
-/// Contains unsafe methods. Use <see cref="UnsafeMemory{T}"/> instead.
-/// </para>
+///     Provides utility methods for allocating and freeing unmanaged memory.
+///     <para>
+///         Contains unsafe methods. Use <see cref="UnsafeMemory{T}" /> instead.
+///     </para>
 /// </summary>
-[UnsafeApi]
+[UnsafeApi(Comment = "This API is meant for internal use.")]
 public static unsafe class Unmanaged
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void* Malloc(int size) => (void*)Marshal.AllocHGlobal(size);
+    public static void* Malloc(int size)
+    {
+        return (void*)Marshal.AllocHGlobal(size);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T* Malloc<T>(int size) where T : unmanaged => (T*)Marshal.AllocHGlobal(size);
+    public static T* Malloc<T>(int size) where T : unmanaged
+    {
+        return (T*)Marshal.AllocHGlobal(size);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Free(ref void* ptr)
     {
         if (ptr is null) return;
-        
+
         Marshal.FreeHGlobal((nint)ptr);
 
         ptr = null; // Disallow the reuse of that pointer.
@@ -33,7 +39,7 @@ public static unsafe class Unmanaged
     public static void Free<T>(ref T* ptr) where T : unmanaged
     {
         if (ptr is null) return;
-        
+
         Marshal.FreeHGlobal((nint)ptr);
 
         ptr = null; // Disallow the reuse of that pointer.

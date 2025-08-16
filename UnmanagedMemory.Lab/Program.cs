@@ -1,9 +1,13 @@
-﻿using UnmanagedMemory;
+﻿using BenchmarkDotNet.Running;
+using UnmanagedMemory;
+using UnmanagedMemory.Lab;
 
-using var memory = Enumerable
-    .Range(0, 25)
-    .ToUnsafeMemory();
+BenchmarkRunner.Run<MemoryBenchmark>();
 
-Console.WriteLine($"[{string.Join(", ", memory)}]");
+// using var memory = Enumerable
+//     .Range(0, 25)
+//     .ToUnsafeMemory();
 
-Console.Read();
+// Console.WriteLine($"[{string.Join(", ", memory)}]");
+
+// Console.Read();

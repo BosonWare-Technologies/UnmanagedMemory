@@ -3,7 +3,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![NuGet](https://img.shields.io/nuget/v/UnmanagedMemory.svg)](https://www.nuget.org/packages/UnmanagedMemory)
 
-A .NET library for safe and efficient allocation and management of unmanaged memory, with a modern, idiomatic API. Designed for high-performance scenarios where direct memory control is required.
+A .NET library for safe and efficient allocation and management of unmanaged memory, with a modern, idiomatic API.
+Designed for high-performance scenarios where direct memory control is required.
 
 ---
 
@@ -39,7 +40,7 @@ using UnmanagedMemory;
 using var memory = new UnsafeMemory<int>(10);
 
 // Fill the memory with a value
-memory.AsSpan().Fill(25);
+memory.Fill(25);
 
 // Set a specific element
 memory[9] = 20;
@@ -68,7 +69,7 @@ A disposable wrapper for a block of unmanaged memory.
 - `T this[int index]`: Indexer for element access.
 - Implements `IEnumerable<T>` for LINQ support.
 
-### `Unmanaged`
+### `Unmanaged` (Meant for internal use)
 
 Static helpers for raw memory allocation.
 
@@ -105,6 +106,7 @@ var txt = nativeBuilder.ToString();
 ```
 
 ## FileUtility
+
 ```csharp
 using UnsafeMemory<byte> bytes = await FileUtility.ReadAllBytesAsync("/path/to/file");
 
@@ -112,6 +114,7 @@ using UnsafeMemory<byte> bytes = await FileUtility.ReadAllBytesAsync("/path/to/f
 ```
 
 ## UnsafeMemoryExtensions
+
 ```csharp
 using UnsafeMemory<int> memory = Enumerable
     .Range(0, 25)
@@ -138,5 +141,6 @@ MIT © [BosonWare, Technologies](https://github.com/BosonWare-Technologies/Unman
 ---
 
 ## Release Notes
+
 Fixed the 'MemoryLeakException' bug in the UnsafeList type.
 
