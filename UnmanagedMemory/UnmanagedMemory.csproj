@@ -24,6 +24,10 @@
             https://github.com/BosonWare-Technologies/UnmanagedMemory
         </RepositoryUrl>
 
+        <Description>
+            A high-performance unmanaged memory library for .NET, providing efficient memory management and manipulation capabilities.
+        </Description>
+
         <PackageReleaseNotes>
             Features:
              - Added `UnsafeMemory.IsAlive` property.
