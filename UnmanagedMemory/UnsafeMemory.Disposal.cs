@@ -7,6 +7,14 @@ public sealed unsafe partial class UnsafeMemory<T>
     : CriticalFinalizerObject, IDisposable where T : unmanaged
 {
     /// <summary>
+    /// Gets a value that indicates whether this memory block has not been disposed.
+    /// <returns>
+    /// true if the memory block is not disposed, otherwise false.
+    /// </returns>
+    /// </summary>
+    public bool IsAlive => _ptr is not null;
+    
+    /// <summary>
     ///     Finalizer that frees unmanaged resources if not already disposed and throws a
     ///     <see cref="MemoryLeakException" /> if
     ///     not properly disposed.
@@ -36,7 +44,7 @@ public sealed unsafe partial class UnsafeMemory<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void ThrowIfDisposed()
     {
-        if (_ptr is null) {
+        if (_ptr is null && _length > 0) {
             throw new ObjectDisposedException(
                 nameof(UnsafeMemory<>),
                 "The unmanaged memory has already been disposed."

@@ -10,18 +10,27 @@ public class MemoryBenchmark
     [Params(10000)]
     public int Length { get; set; } = 1000000;
 
-    [Benchmark]
+    //[Benchmark]
     public void Managed()
+    {
+        // ReSharper disable once CollectionNeverQueried.Local
+        var array = new byte[Length];
+        
+        for (var i = 0; i < array.Length; i++)
+            array[i] = 5;
+    }
+    
+    [Benchmark]
+    public void ManagedWithSpan()
     {
         var array = new byte[Length];
         
-        var span = new Span<byte>(array);
-
-        for (var i = 0; i < span.Length; i++)
-            span[i] = 5;
+        foreach (ref var value in array.AsSpan()) {
+            value = 5;
+        }
     }
 
-    [Benchmark]
+    //[Benchmark]
     public void Unmanaged()
     {
         using var memory = new UnsafeMemory<byte>(Length);
@@ -35,12 +44,12 @@ public class MemoryBenchmark
     {
         using var array = new UnsafeMemory<byte>(Length);
 
-        foreach (ref var value in memory.AsSpan()) {
+        foreach (ref var value in array.AsSpan()) {
             value = 5;
         }
     }
 
-    [Benchmark]
+    //[Benchmark]
     public unsafe void Raw()
     {
         var ptr = UnmanagedMemory.Unmanaged.Malloc<byte>(Length);

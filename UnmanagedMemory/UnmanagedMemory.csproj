@@ -10,7 +10,7 @@
 
         <Authors>Realtin (Coding Boson)</Authors>
         <Company>BosonWare, Technologies</Company>
-        <Version>3.0.0</Version>
+        <Version>3.1.0</Version>
         <Copyright>BosonWare, Technologies</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -25,11 +25,12 @@
         </RepositoryUrl>
 
         <PackageReleaseNotes>
-            Added JetBrains.Annotations.
-
-            Improved Performance.
-
-            Removed UnsafeMemoryPool
+            Features:
+             - Added `UnsafeMemory.IsAlive` property.
+            
+            Bug Fixes:
+             - Fixed `Resize` operation in `UnsafeMemoryExtensions.ToUnsafeMemory`.
+             - Fixed `ObjectDisposedException` in `AsSpan` when `UnsafeMemory.Length` is zero.
         </PackageReleaseNotes>
     </PropertyGroup>
 

@@ -58,7 +58,9 @@ public static class UnsafeMemoryExtensions
             throw;
         }
         finally {
-            memory.Resize(length); // Trim unused memory.
+            if (memory.IsAlive) {
+                memory.Resize(length); // Trim unused memory.
+            }
         }
 
         return memory;
@@ -100,7 +102,9 @@ public static class UnsafeMemoryExtensions
             throw;
         }
         finally {
-            memory.Resize(length); // Trim unused memory.
+            if (memory.IsAlive) {
+                memory.Resize(length); // Trim unused memory.
+            }
         }
 
         return memory;

@@ -191,6 +191,8 @@ public sealed unsafe partial class UnsafeMemory<T> : IEnumerable<T> where T : un
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Clear()
     {
+        ThrowIfDisposed();
+        
         AsSpan().Clear();
     }
 
@@ -284,7 +286,7 @@ public sealed unsafe partial class UnsafeMemory<T> : IEnumerable<T> where T : un
     ///     Returns a raw pointer to the allocated memory.
     /// </summary>
     /// <returns></returns>
-    [UnsafeApi]
+    [UnsafeApi(Comment = "This API is for internal use.")]
     public T* AsUnsafePointer()
     {
         ThrowIfDisposed();
@@ -296,6 +298,7 @@ public sealed unsafe partial class UnsafeMemory<T> : IEnumerable<T> where T : un
     ///     Returns an enumerator that iterates through the memory block.
     /// </summary>
     /// <returns>An enumerator for the memory block.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerator<T> GetEnumerator()
     {
         ThrowIfDisposed();
@@ -307,6 +310,7 @@ public sealed unsafe partial class UnsafeMemory<T> : IEnumerable<T> where T : un
     ///     Returns an enumerator that iterates through the memory block.
     /// </summary>
     /// <returns>An enumerator for the memory block.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
@@ -350,6 +354,7 @@ public sealed unsafe partial class UnsafeMemory<T> : IEnumerable<T> where T : un
         readonly object IEnumerator.Current => Current;
 
         /// <inheritdoc />
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool MoveNext()
         {
             if (_index + 1 >= memory.Length)

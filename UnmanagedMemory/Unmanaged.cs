@@ -1,3 +1,5 @@
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using UnmanagedMemory.Annotations;
@@ -13,6 +15,7 @@ namespace UnmanagedMemory;
 [UnsafeApi(Comment = "This API is meant for internal use.")]
 public static unsafe class Unmanaged
 {
+    // ReSharper disable once UnusedMember.Global
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void* Malloc(int size)
     {
@@ -25,6 +28,7 @@ public static unsafe class Unmanaged
         return (T*)Marshal.AllocHGlobal(size);
     }
 
+    // ReSharper disable once UnusedMember.Global
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Free(ref void* ptr)
     {

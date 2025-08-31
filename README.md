@@ -141,6 +141,9 @@ MIT © [BosonWare, Technologies](https://github.com/BosonWare-Technologies/Unman
 ---
 
 ## Release Notes
+**Features:**
+ - Added `UnsafeMemory.IsAlive` property.
 
-Fixed the 'MemoryLeakException' bug in the UnsafeList type.
-
+**Bug Fixes:**
+ - Fixed `Resize` operation in `UnsafeMemoryExtensions.ToUnsafeMemory`.
+ - Fixed `ObjectDisposedException` in `AsSpan` when `UnsafeMemory.Length` is zero.
