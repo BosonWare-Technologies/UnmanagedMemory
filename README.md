@@ -141,9 +141,26 @@ MIT © [BosonWare, Technologies](https://github.com/BosonWare-Technologies/Unman
 ---
 
 ## Release Notes
-**Features:**
- - Added `UnsafeMemory.IsAlive` property.
 
-**Bug Fixes:**
- - Fixed `Resize` operation in `UnsafeMemoryExtensions.ToUnsafeMemory`.
- - Fixed `ObjectDisposedException` in `AsSpan` when `UnsafeMemory.Length` is zero.
+**Features:**
+- Added `Safety.MemoryLeakManager`.
+
+#### Example Program.cs:
+```csharp
+// In development
+MemoryLeakManager.SetHandler(ctx => {
+    Console.WriteLine($"[Development] Memory Leak of {ctx.Size} bytes.");
+    
+    Environment.Exit(1);
+});
+
+// In production.
+unsafe {
+    MemoryLeakManager.SetHandler(ctx => {
+        Unmanaged.Free(ref ctx.Pointer);
+        
+        Console.WriteLine($"[Production] Memory Leak of {ctx.Size} bytes.");
+    });
+}
+```
+

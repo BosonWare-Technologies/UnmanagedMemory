@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.ConstrainedExecution;
+using UnmanagedMemory.Safety;
 
 namespace UnmanagedMemory;
 
@@ -21,12 +22,12 @@ public sealed unsafe partial class UnsafeMemory<T>
     /// </summary>
     ~UnsafeMemory()
     {
-        if (_ptr is null)
-            return;
+        if (_ptr is null) 
+        {
+            return; // N/A
+        }
 
-        Free(); // Free the unmanaged resources.
-
-        throw new MemoryLeakException();
+        MemoryLeakManager.HandleMemoryLeak(new MemoryLeakManager.Context(_ptr, Size));
     }
 
     /// <summary>

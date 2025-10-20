@@ -10,7 +10,7 @@
 
         <Authors>Realtin (Coding Boson)</Authors>
         <Company>BosonWare, Technologies</Company>
-        <Version>3.1.0</Version>
+        <Version>4.0.0</Version>
         <Copyright>BosonWare, Technologies</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -30,11 +30,8 @@
 
         <PackageReleaseNotes>
             Features:
-             - Added `UnsafeMemory.IsAlive` property.
-            
-            Bug Fixes:
-             - Fixed `Resize` operation in `UnsafeMemoryExtensions.ToUnsafeMemory`.
-             - Fixed `ObjectDisposedException` in `AsSpan` when `UnsafeMemory.Length` is zero.
+             - Added `Safety.MemoryLeakManager`.
+             - Added more methods to `NativeStringBuilder`
         </PackageReleaseNotes>
     </PropertyGroup>
 

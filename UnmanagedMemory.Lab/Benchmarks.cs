@@ -12,13 +12,13 @@ public class Benchmarks
     {
         using var builder = new NativeStringBuilder(capacity: 2048);
 
-        builder.Append("[");
+        builder.Append('[');
         for (var i = 0; i < 250; i++) {
             builder.Append(i);
         }
-        builder.Append("]");
+        builder.Append(']');
 
-        var str = builder.ToString();
+        using var ut8Bytes = builder.ToUtf8Bytes();
     }
 
     [Benchmark]
@@ -26,12 +26,13 @@ public class Benchmarks
     {
         var builder = new StringBuilder();
 
-        builder.Append("[");
+        builder.Append('[');
         for (var i = 0; i < 250; i++) {
             builder.Append(i);
         }
-        builder.Append("]");
+        builder.Append(']');
 
-        var str = builder.ToString();
+        // StringBuilder can be very expensive if you need a UTF-8 encoded byte array.
+        var bytes = Encoding.UTF8.GetBytes(builder.ToString());
     }
 }

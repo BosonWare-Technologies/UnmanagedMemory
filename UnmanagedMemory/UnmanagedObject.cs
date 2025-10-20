@@ -3,6 +3,10 @@ using System.Runtime.ConstrainedExecution;
 
 namespace UnmanagedMemory;
 
+/// <summary>
+/// 
+/// </summary>
+[Obsolete("This class is no longer required.")]
 public abstract class UnmanagedObject : CriticalFinalizerObject, IDisposable
 {
     protected bool IsDisposed;

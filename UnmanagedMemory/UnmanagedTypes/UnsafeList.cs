@@ -17,7 +17,7 @@ namespace UnmanagedMemory.UnmanagedTypes;
 [PublicAPI]
 [DebuggerTypeProxy(typeof(UnsafeListDebuggerProxy<>))]
 public unsafe class UnsafeList<T>
-    : UnmanagedObject, IEnumerable<T> where T : unmanaged
+    : IDisposable, IEnumerable<T> where T : unmanaged
 {
     internal readonly UnsafeMemory<T> _items;
 
@@ -158,11 +158,12 @@ public unsafe class UnsafeList<T>
         return _items.AsSpan(0, Count);
     }
 
-    protected override void Free()
+    /// <inheritdoc />
+    public void Dispose()
     {
         _items.Dispose();
     }
-
+    
     /// <summary>
     ///     Returns a raw pointer to the allocated memory.
     /// </summary>
