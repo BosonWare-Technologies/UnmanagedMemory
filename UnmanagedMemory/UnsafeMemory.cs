@@ -229,7 +229,7 @@ public sealed unsafe partial class UnsafeMemory<T> : IEnumerable<T> where T : un
         ThrowIfDisposed();
 
         // Sanitize user input.
-        if (start < 0 || start >= _length)
+        if ((uint)start >= _length)
             throw new ArgumentOutOfRangeException(nameof(start), "Start index must be within the bounds of the memory block.");
 
         return _length == 0
